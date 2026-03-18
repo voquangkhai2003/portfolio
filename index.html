@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Võ Quang Khải — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:    #1A6FBF;
+    --red-lt: #3B9EE8;
+    --dark:   #080F1A;
+    --panel:  #0D1A2E;
+    --card:   #102040;
+    --border: #1E3A5F;
+    --mid:    #888;
+    --light:  #CCCCCC;
+    --white:  #F5F5F5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(8,15,26,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--mid);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 100px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 40%, rgba(26,111,191,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(26,111,191,0.05) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none; opacity: .03;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(26,111,191,0.12);
+    border: 1px solid rgba(26,111,191,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--red-lt); text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    animation: fadeUp .6s .1s ease both;
+  }
+  h1 .accent { color: var(--red); }
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 17px;
+    color: var(--mid);
+    max-width: 580px;
+    font-weight: 300;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-sub strong { color: var(--light); font-weight: 500; }
+  .hero-cta {
+    margin-top: 40px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .btn-primary {
+    background: var(--red);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600; font-size: 14px;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--red-lt); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--light);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 500; font-size: 14px;
+    text-decoration: none;
+    transition: border-color .2s, color .2s, transform .15s;
+  }
+  .btn-outline:hover { border-color: var(--mid); color: var(--white); transform: translateY(-2px); }
+
+  .hero-stats {
+    margin-top: 72px;
+    display: flex; gap: 48px; flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 40px;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px; font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--red); }
+  .stat-label { font-size: 12px; color: var(--mid); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 48px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--red);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--red); opacity: .5; }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 56px;
+    line-height: 1.15;
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--panel); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 14px;
+    transition: border-color .2s, transform .2s;
+  }
+  .skill-card:hover { border-color: var(--red); transform: translateY(-3px); }
+  .skill-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(26,111,191,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .skill-name { font-weight: 500; font-size: 14px; color: var(--white); }
+  .skill-sub { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative; overflow: hidden;
+    transition: border-color .25s, transform .25s;
+    display: flex; flex-direction: column;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    opacity: 0; transition: opacity .25s;
+  }
+  .project-card:hover { border-color: rgba(26,111,191,0.4); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+    background: rgba(26,111,191,0.1); color: var(--red-lt);
+    border: 1px solid rgba(26,111,191,0.2);
+  }
+  .tag.blue { background: rgba(52,152,219,0.1); color: #5dade2; border-color: rgba(52,152,219,0.2); }
+  .tag.green { background: rgba(39,174,96,0.1); color: #58d68d; border-color: rgba(39,174,96,0.2); }
+  .tag.purple { background: rgba(155,89,182,0.1); color: #bb8fce; border-color: rgba(155,89,182,0.2); }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--white); margin-bottom: 12px; letter-spacing: -0.01em;
+  }
+  .project-desc { font-size: 13.5px; color: var(--mid); line-height: 1.65; flex: 1; }
+  .project-highlights {
+    margin-top: 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .highlight {
+    font-size: 12.5px; color: var(--light);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .highlight::before { content: '→'; color: var(--red); flex-shrink: 0; margin-top: 1px; }
+  .project-date { margin-top: 24px; font-size: 12px; color: var(--mid); font-style: italic; }
+
+  /* ── ACHIEVEMENTS ── */
+  #achievements { background: var(--panel); }
+  .achievements-list { display: flex; flex-direction: column; gap: 24px; }
+  .achievement-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 36px;
+    display: grid; grid-template-columns: auto 1fr; gap: 28px;
+    align-items: start;
+    transition: border-color .25s, transform .2s;
+  }
+  .achievement-card:hover { border-color: rgba(26,111,191,0.4); transform: translateX(4px); }
+  .achievement-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(26,111,191,0.12);
+    border: 1px solid rgba(26,111,191,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .achievement-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #f4d03f; margin-bottom: 8px;
+  }
+  .achievement-badge::before { content: '★'; font-size: 10px; }
+  .achievement-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--white); margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .achievement-desc { font-size: 13.5px; color: var(--mid); line-height: 1.65; }
+  .achievement-metrics {
+    margin-top: 16px;
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .metric {
+    font-size: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 14px;
+    color: var(--light);
+  }
+  .metric strong { color: var(--white); font-weight: 600; }
+
+  /* ── EXPERIENCE & EDUCATION ── */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1px 1fr; gap: 0 28px;
+    position: relative;
+  }
+  .timeline-date {
+    font-size: 12px; color: var(--mid); text-align: right;
+    padding-top: 4px; font-style: italic; line-height: 1.4;
+  }
+  .timeline-line {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 6px 0;
+  }
+  .timeline-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--red); border: 2px solid var(--dark);
+    flex-shrink: 0; margin-top: 3px;
+  }
+  .timeline-connector { flex: 1; width: 1px; background: var(--border); min-height: 20px; }
+  .timeline-item:last-child .timeline-connector { display: none; }
+  .timeline-content { padding-bottom: 40px; }
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .timeline-org { font-size: 13px; color: var(--red-lt); margin-bottom: 10px; font-weight: 500; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .timeline-bullets li {
+    font-size: 13px; color: var(--mid); line-height: 1.6;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .timeline-bullets li::before { content: '·'; color: var(--red); flex-shrink: 0; font-size: 16px; line-height: 1.4; }
+  .edu-badge {
+    display: inline-block;
+    font-size: 11px; padding: 3px 10px; border-radius: 100px;
+    background: rgba(26,111,191,0.1); color: var(--red-lt);
+    border: 1px solid rgba(26,111,191,0.2);
+    margin-bottom: 6px; font-weight: 600;
+  }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { background: var(--panel); }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .cert-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 14px;
+    transition: border-color .2s, transform .2s;
+  }
+  .cert-card:hover { border-color: var(--red); transform: translateY(-2px); }
+  .cert-logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(255,255,255,0.06); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .cert-name { font-size: 13px; font-weight: 500; color: var(--white); }
+  .cert-issuer { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: linear-gradient(135deg, #080F1A 0%, #091525 100%);
+    position: relative; overflow: hidden;
+  }
+  #contact::before {
+    content: '';
+    position: absolute; top: -50%; left: -20%;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,111,191,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-inner { max-width: 680px; }
+  .contact-links { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 20px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 28px;
+    text-decoration: none; color: var(--white);
+    transition: border-color .2s, transform .2s;
+    group: true;
+  }
+  .contact-link:hover { border-color: rgba(26,111,191,0.5); transform: translateX(6px); }
+  .contact-link-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(26,111,191,0.1); border: 1px solid rgba(26,111,191,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .contact-link-label { font-size: 11px; color: var(--mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .contact-link-value { font-size: 15px; font-weight: 500; }
+  .contact-link-arrow { margin-left: auto; color: var(--mid); font-size: 18px; transition: transform .2s; }
+  .contact-link:hover .contact-link-arrow { transform: translateX(4px); color: var(--red); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 28px 48px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--mid);
+  }
+  footer span { font-family: 'Syne', sans-serif; font-weight: 600; color: var(--white); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    #hero { padding: 100px 24px 72px; }
+    .timeline-item { grid-template-columns: 100px 1px 1fr; gap: 0 16px; }
+    .timeline-date { font-size: 11px; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">VQK<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Available for internship</div>
+    <h1>Võ Quang<br><span class="accent">Khải.</span></h1>
+    <p class="hero-sub">
+      <strong>Data Analyst</strong> — Final-year Data Science student at UEH with a background in
+      Financial Banking and currently pursuing a Master's in Economic Statistics.
+      Turning messy data into decisions that matter.
+    </p>
+    <div class="hero-cta">
+      <a href="https://github.com/voquangkhai2003" target="_blank" class="btn-primary">View Projects</a>
+      <a href="https://linkedin.com/in/voquangkhaikg2003" target="_blank" class="btn-outline">LinkedIn →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">3.61<span>/4</span></div>
+        <div class="stat-label">GPA — Data Science</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6<span>+</span></div>
+        <div class="stat-label">Analytic Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2<span>×</span></div>
+        <div class="stat-label">Competitions Won</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">413</div>
+        <div class="stat-label">Stocks Analyzed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label reveal">Technical Skills</div>
+    <h2 class="section-title reveal">Tools I Work With</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><div class="skill-icon">🐍</div><div><div class="skill-name">Python</div><div class="skill-sub">Pandas, NumPy, Scikit-learn</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">📊</div><div><div class="skill-name">Power BI</div><div class="skill-sub">DAX, Data Modeling, Dashboard</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🗄️</div><div><div class="skill-name">SQL</div><div class="skill-sub">Querying & Transformation</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">📗</div><div><div class="skill-name">Excel</div><div class="skill-sub">Pivot Tables, Reporting</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🔬</div><div><div class="skill-name">Statistical Analysis</div><div class="skill-sub">ANOVA, Regression, Hypothesis Testing</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🗺️</div><div><div class="skill-name">GeoPandas</div><div class="skill-sub">Spatial Analysis, CRS Transformation</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🤖</div><div><div class="skill-name">Machine Learning</div><div class="skill-sub">Random Forest, XGBoost, SVM, SMOTE</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🔤</div><div><div class="skill-name">NLP</div><div class="skill-sub">TF-IDF, ViTokenizer, Transformers</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🚀</div><div><div class="skill-name">Streamlit</div><div class="skill-sub">Web App Deployment</div></div></div>
+      <div class="skill-card reveal"><div class="skill-icon">🐙</div><div><div class="skill-name">Git / GitHub</div><div class="skill-sub">Version Control</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label reveal">Portfolio</div>
+    <h2 class="section-title reveal">Selected Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">NLP</span><span class="tag green">Streamlit</span></div>
+        <div class="project-title">Co.opmart NLP Sentiment Analysis</div>
+        <div class="project-desc">End-to-end Vietnamese NLP project — from raw Google Maps reviews to a real-time deployed sentiment monitoring dashboard. Auto-labeling with transformer, multi-model ML training, and production Streamlit app.</div>
+        <div class="project-highlights">
+          <div class="highlight">53,451 reviews scraped across Co.opmart branches nationwide</div>
+          <div class="highlight">Auto-labeled via Vietnamese-Sentiment-visobert (128 reviews/batch)</div>
+          <div class="highlight">TF-IDF (5K features) + LinearSVM selected as best performer</div>
+          <div class="highlight">Deployed Streamlit app with branch leaderboard & KPI cards</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/NLP-Sentiment-Analysis-Project" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag">Python</span><span class="tag blue">Power BI</span><span class="tag green">ML</span></div>
+        <div class="project-title">Telco Customer Churn Prediction</div>
+        <div class="project-desc">End-to-end churn analytics combining machine learning (Python) and business intelligence (Power BI) to predict at-risk customers and visualize churn patterns for retention strategy.</div>
+        <div class="project-highlights">
+          <div class="highlight">7,043 records · 26.5% churn rate · SMOTE oversampling</div>
+          <div class="highlight">Random Forest, XGBoost, SVM — prioritized Recall for churned class</div>
+          <div class="highlight">5-page Power BI dashboard with DAX measures</div>
+          <div class="highlight">Key drivers: month-to-month contracts, first-12-month tenure</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/Telco-Customer-Churn" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag blue">Power BI</span><span class="tag">DAX</span><span class="tag purple">Finance</span></div>
+        <div class="project-title">Banking & Finance Transaction Analytics</div>
+        <div class="project-desc">Interactive Power BI dashboard analyzing financial transaction data — transaction patterns, customer profiling, card usage, spending categories, and error monitoring across U.S. states.</div>
+        <div class="project-highlights">
+          <div class="highlight">Star schema: 4 tables (transactions, users, cards, MCC codes)</div>
+          <div class="highlight">7 DAX measures: Total Amount, Error Rate %, Avg Transaction</div>
+          <div class="highlight">Hourly peak patterns for fraud threshold planning</div>
+          <div class="highlight">Geographic risk via filled U.S. state map</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/Banking-Finance-Transaction-Analytics" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag green">Excel</span><span class="tag purple">CRM</span><span class="tag blue">B2B</span></div>
+        <div class="project-title">CRM & Sales Pipeline Analysis</div>
+        <div class="project-desc">End-to-end Excel analytics project analyzing a B2B SaaS sales pipeline — funnel performance, lead distribution, agent productivity, revenue forecasting, and lost opportunity diagnosis across European markets.</div>
+        <div class="project-highlights">
+          <div class="highlight">3,000 leads · 19 fields · 11.6% overall conversion rate</div>
+          <div class="highlight">77.2% drop-off at Qualified stage identified as key bottleneck</div>
+          <div class="highlight">3-scenario forecast: Optimistic $1.9M / Weighted $874K / Conservative $504K</div>
+          <div class="highlight">Agent scorecard: win rate, conversion rate, avg days to close</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/CRM-and-Sales-Pipelines-" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag">Python</span><span class="tag green">Statistics</span><span class="tag purple">EDA</span></div>
+        <div class="project-title">Mental Health & Social Media Balance</div>
+        <div class="project-desc">Exploratory data analysis investigating the relationship between social media usage, screen time, and mental health indicators using rigorous statistical hypothesis testing.</div>
+        <div class="project-highlights">
+          <div class="highlight">500 user records · 10 variables · ydata_profiling auto-report</div>
+          <div class="highlight">Feature engineering: ScreenTime_Group, Age_Group, High_Stress flag</div>
+          <div class="highlight">Pearson, Chi-square, ANOVA, Kruskal-Wallis, Welch's T-test</div>
+          <div class="highlight">Screen time: strongest negative predictor of happiness (r = -0.71)</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/Mental-Health-and-Social-Media-Balance" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-tags"><span class="tag blue">Power BI</span><span class="tag">DAX</span><span class="tag green">Ops</span></div>
+        <div class="project-title">Uber NCR Ride Analytics Dashboard</div>
+        <div class="project-desc">Comprehensive ride-hailing analytics project for the NCR market — diagnosing a 38% booking failure rate, optimizing supply allocation, and surfacing driver cancellation root causes.</div>
+        <div class="project-highlights">
+          <div class="highlight">150,000 bookings · 176 zones · 7 vehicle types (Jan–Sep 2024)</div>
+          <div class="highlight">30+ DAX measures: NDF Over/Under, VTAT P90, Fare per km</div>
+          <div class="highlight">NDF hotspots identified where failure rate exceeded 10%</div>
+          <div class="highlight">"Wrong Address" flagged as #1 cancellation reason (22.5%)</div>
+        </div>
+        <div class="project-date"><a href="https://github.com/voquangkhai2003/Uber-Analytics" target="_blank" style="color:var(--red-lt);text-decoration:none;">View on GitHub →</a></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-inner">
+    <div class="section-label reveal">Recognition</div>
+    <h2 class="section-title reveal">Achievements</h2>
+    <div class="achievements-list">
+
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">🏆</div>
+        <div>
+          <div class="achievement-badge">Third Prize · 2025</div>
+          <div class="achievement-title">UEH Young Researcher Award 2025</div>
+          <div class="achievement-desc">
+            Applied Event Study methodology (Fama et al., 1969) to 413 HOSE-listed companies across 11 sectors, measuring abnormal stock returns following Iran's missile attack on Israel (Oct 1, 2024). Used OLS regression over a 250-day estimation window and validated findings with BMP parametric and Wilcoxon Signed-Rank non-parametric tests.
+          </div>
+          <div class="achievement-metrics">
+            <div class="metric">Event-day AAR <strong>-0.249%</strong> (p &lt; 0.01)</div>
+            <div class="metric">Peak CAR <strong>-3.247%</strong> at [-15,+15]</div>
+            <div class="metric"><strong>413</strong> HOSE companies</div>
+            <div class="metric"><strong>11</strong> sectors analyzed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">🚌</div>
+        <div>
+          <div class="achievement-badge">Top 16 · 2025</div>
+          <div class="achievement-title">HCMUT BDC Data Hackathon 2025</div>
+          <div class="achievement-desc">
+            Processed 30 days of anonymized raw GPS data from HCMC bus fleet. Performed GeoPandas spatial join (EPSG:4326 to 3857, 10m threshold) to match vehicle positions to bus stops. Compared average bus speed across baseline (Apr 1-26) vs. holiday period (Apr 27-30) to identify congestion patterns.
+          </div>
+          <div class="achievement-metrics">
+            <div class="metric"><strong>30 days</strong> GPS data</div>
+            <div class="metric">GeoPandas <strong>spatial join</strong></div>
+            <div class="metric">Before vs. after <strong>holiday analysis</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label reveal">Background</div>
+    <h2 class="section-title reveal">Experience & Education</h2>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Mar 2026 – Present</div>
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-connector"></div></div>
+        <div class="timeline-content">
+          <div class="edu-badge">Postgraduate</div>
+          <div class="timeline-title">M.Sc. Economic Statistics</div>
+          <div class="timeline-org">University of Economics Ho Chi Minh City (UEH)</div>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Nov 2024 – Present</div>
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-connector"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Data Subteam Adviser</div>
+          <div class="timeline-org">ET CLUB, UEH</div>
+          <ul class="timeline-bullets">
+            <li>Designed training materials on data cleaning, EDA, visualization, and intro ML</li>
+            <li>Mentored members on project quality and analytical thinking</li>
+            <li>Led collaborative academic data projects applying statistical methods</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Jan 2024 – Present</div>
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-connector"></div></div>
+        <div class="timeline-content">
+          <div class="edu-badge">Undergraduate · GPA 3.61/4.0</div>
+          <div class="timeline-title">B.Sc. Data Science</div>
+          <div class="timeline-org">University of Economics Ho Chi Minh City (UEH)</div>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Mar – May 2023</div>
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-connector"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Financial Accounting Intern</div>
+          <div class="timeline-org">Tan Hung Notebook Production Co., Ltd.</div>
+          <ul class="timeline-bullets">
+            <li>Calculated raw material costs and determined per-unit production cost</li>
+            <li>Compiled monthly financial reports and co-developed cost-optimization strategies</li>
+            <li>Built Power BI dashboards to monitor financial and sales KPIs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-date">Sep 2021 – May 2025</div>
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-connector"></div></div>
+        <div class="timeline-content">
+          <div class="edu-badge">Undergraduate · Distinction</div>
+          <div class="timeline-title">B.Sc. Financial Banking — Financial Investment</div>
+          <div class="timeline-org">University of Economics Ho Chi Minh City (UEH)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-label reveal">Credentials</div>
+    <h2 class="section-title reveal">Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-card reveal"><div class="cert-logo">🟨</div><div><div class="cert-name">HackerRank SQL (Intermediate)</div><div class="cert-issuer">HackerRank</div></div></div>
+      <div class="cert-card reveal"><div class="cert-logo">🟨</div><div><div class="cert-name">HackerRank SQL (Basic)</div><div class="cert-issuer">HackerRank</div></div></div>
+      <div class="cert-card reveal"><div class="cert-logo">🟨</div><div><div class="cert-name">HackerRank Python (Basic)</div><div class="cert-issuer">HackerRank</div></div></div>
+      <div class="cert-card reveal"><div class="cert-logo">🔵</div><div><div class="cert-name">Google Data Analytics Professional</div><div class="cert-issuer">Google</div></div></div>
+      <div class="cert-card reveal"><div class="cert-logo">📝</div><div><div class="cert-name">TOEIC Listening & Reading — 635</div><div class="cert-issuer">ETS</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div class="section-label reveal">Get in Touch</div>
+      <h2 class="section-title reveal">Let's Work Together</h2>
+      <p class="reveal" style="color:var(--mid); font-size:16px; margin-top:-32px; margin-bottom: 0;">
+        Currently open for Data Analyst internship opportunities. Feel free to reach out!
+      </p>
+      <div class="contact-links">
+        <a href="mailto:voquangkhaikg2003@gmail.com" class="contact-link reveal">
+          <div class="contact-link-icon">✉️</div>
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value">voquangkhaikg2003@gmail.com</div></div>
+          <div class="contact-link-arrow">→</div>
+        </a>
+        <a href="https://linkedin.com/in/voquangkhaikg2003" target="_blank" class="contact-link reveal">
+          <div class="contact-link-icon">💼</div>
+          <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/voquangkhaikg2003</div></div>
+          <div class="contact-link-arrow">→</div>
+        </a>
+        <a href="https://github.com/voquangkhai2003" target="_blank" class="contact-link reveal">
+          <div class="contact-link-icon">🐙</div>
+          <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">github.com/voquangkhai2003</div></div>
+          <div class="contact-link-arrow">→</div>
+        </a>
+        <a href="tel:0866932545" class="contact-link reveal">
+          <div class="contact-link-icon">📞</div>
+          <div><div class="contact-link-label">Phone</div><div class="contact-link-value">0866 932 545</div></div>
+          <div class="contact-link-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 <span>Võ Quang Khải</span></div>
+  <div>Data Science · UEH Ho Chi Minh City</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

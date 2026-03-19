@@ -715,9 +715,9 @@
         Currently open for Data Analyst internship opportunities. Feel free to reach out!
       </p>
       <div class="contact-links">
-        <a href="/cdn-cgi/l/email-protection#6a1c051b1f0b040d01020b03010d585a5a592a0d070b030644090507" class="contact-link reveal">
+        <a href="#" id="email-link" class="contact-link reveal">
           <div class="contact-link-icon">✉️</div>
-          <div><div class="contact-link-label">Email</div><div class="contact-link-value"><span class="__cf_email__" data-cfemail="8dfbe2fcf8ece3eae6e5ece4e6eabfbdbdbecdeae0ece4e1a3eee2e0">[email&#160;protected]</span></div></div>
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value" id="email-display">voquangkhaikg2003 [at] gmail.com</div></div>
           <div class="contact-link-arrow">→</div>
         </a>
         <a href="https://linkedin.com/in/voquangkhaikg2003" target="_blank" class="contact-link reveal">
@@ -747,6 +747,15 @@
 </footer>
 
 <script>
+  // Assemble email to bypass Cloudflare obfuscation
+  const u = 'voquangkhaikg2003';
+  const d = 'gmail.com';
+  const email = u + '@' + d;
+  const el = document.getElementById('email-link');
+  const disp = document.getElementById('email-display');
+  if (el) el.href = 'mailto:' + email;
+  if (disp) disp.textContent = email;
+
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
